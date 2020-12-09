@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import 'components/DayListItem.scss';
 
 export default function DayListItem({name, spots, setDay, selected}) {
+  
   const dayClass = 'day-list__item day-list__item' + classnames({
     "--selected": selected,
     "--full": spots === 0

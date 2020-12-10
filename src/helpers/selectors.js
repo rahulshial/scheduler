@@ -1,6 +1,6 @@
 
 
-const getAppointmentsForDay = function (state, day) {
+const getAppointmentsForDay = (state, day) => {
   const appointmentsArray = [];
 
   if (state.days.length !== 0) {
@@ -14,7 +14,7 @@ const getAppointmentsForDay = function (state, day) {
   return appointmentsArray;
 };
 
-const getInterview = function(state, interview) {
+const getInterview = (state, interview) => {
   if (interview === null) {
     return null;
   };
@@ -29,8 +29,24 @@ const getInterview = function(state, interview) {
   return returnObj;
 };
 
+const getInterviewersForDay = (state, day) => {
+  const interviewersArray = [];
+
+  if (state.days.length !== 0) {
+  const dayFor = state.days.find(dayArr => dayArr.name === day);
+    if(dayFor) {
+      for (const interviewer of dayFor.interviewers) {
+        interviewersArray.push(state.interviewers[interviewer]);
+      };
+    }
+  }
+  return interviewersArray;
+
+};
+
 export {
   getAppointmentsForDay,
   getInterview,
+  getInterviewersForDay,
 };
 

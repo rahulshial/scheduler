@@ -18,18 +18,6 @@ export default function Application(props) {
   const setDay = (day => setState({ ...state, day }));
   const dailyAppointments = getAppointmentsForDay(state, state.day)
 
-  // const schedule = state.appointments.map((appointment) => {
-  //   const interview = getInterview(state, appointment.interview);  
-  //   return (
-  //     <Appointment
-  //       key={appointment.id}
-  //       id={appointment.id}
-  //       time={appointment.time}
-  //       interview={interview}
-  //     />
-  //   );
-  // });
-
   useEffect(() => {
     const daysURL = `/api/days`;
     const appointmentsURL = `/api/appointments`;

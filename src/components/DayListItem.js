@@ -9,8 +9,6 @@ export default function DayListItem({name, spots, setDay, selected}) {
     "--full": spots === 0
   });
 
-  console.log(dayClass, 'dayclass *-*-*-*-*-*-');
-  
   const onClick = () => {
     if(setDay) {
       setDay(name)

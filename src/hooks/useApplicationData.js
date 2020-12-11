@@ -33,6 +33,15 @@ export default function useApplication() {
 
   /** Function Declarations */
 
+  const updateSpotsForDay = (state, id, diff) => {
+    const newDays = state.days.find(event => event.appointments.includes(id));
+    console.log(`add: ${diff} **** newDays: ${newDays.id} **** spots: ${newDays.spots}`);
+    newDays.spots += diff;
+    console.log(`add: ${diff} **** newDays: ${newDays.id} **** spotsAfter: ${newDays.spots}`);
+    const days = state.days.map(day => day.id === newDays.id ? newDays : day);
+    return days;
+  };
+
   const bookInterview = (id, interview) => {
     /** Create / Add a new appointment to the state and database */
     const appointment = {
@@ -44,15 +53,19 @@ export default function useApplication() {
       ...state.appointments,
       [id]: appointment
     };
-   
+
+    const add = !state.appointments[id].interview ? -1 : 0;
+    const days = updateSpotsForDay(state, id, add);
+
     const appointmentsByIdURL = `/api/appointments/${id}`;
     return axios.put(appointmentsByIdURL, {interview})
     .then(response => {
       if (response.status === 204) {
-        setState({
-          ...state,
+        setState(prev => ({
+          ...prev,
+          days,
           appointments
-        });          
+        }));
       }
     })
   };
@@ -69,15 +82,18 @@ export default function useApplication() {
       ...state.appointments,
       [id]: appointment
     };
+    const add = +1;
+    const days = updateSpotsForDay(state, id, add);
 
     const appointmentsByIdURL = `/api/appointments/${id}`;
     return axios.delete(appointmentsByIdURL)
     .then(response => {
       if (response.status === 204) {
-        setState({
-          ...state,
+        setState(prev => ({
+          ...prev,
+          days,
           appointments
-        });          
+        }));
       }
     })
   };

@@ -22,7 +22,7 @@ export default function DayListItem({name, spots, setDay, selected}) {
   } else if(spots > 1) {
     spots += ' spots remaining';
   };
-
+  
   return (
     <li className={dayClass} onClick={onClick}>
       <h2 className="text--regular">{name}</h2> 

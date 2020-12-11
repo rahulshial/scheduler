@@ -5,11 +5,13 @@ import Appointment from 'components/Appointment';
 import {
   getAppointmentsForDay, 
   getInterview,
-getInterviewersForDay } from '../helpers/selectors';
+  getInterviewersForDay } from '../helpers/selectors';
+
 import "components/Application.scss";
 
 export default function Application(props) {
 
+  /** Declare the initial useState which is updated thruout execution */
   const [state, setState] = useState({
     day: 'Monday',
     days: [],
@@ -17,9 +19,12 @@ export default function Application(props) {
     interviewers: {},
   })
   
+  /** set state data */
   const setDay = (day => setState({ ...state, day }));
-  const dailyAppointments = getAppointmentsForDay(state, state.day)
 
+
+
+  /** Fetch all the data form the DB and load to state */
   useEffect(() => {
     const daysURL = `/api/days`;
     const appointmentsURL = `/api/appointments`;
@@ -36,6 +41,78 @@ export default function Application(props) {
       });
     }, []);
 
+    /** Function Declarations */
+    const bookInterview = (id, interview) => {
+
+      /** Create the appointment */
+      const appointment = {
+        ...state.appointments[id],
+        interview: { ...interview }
+      };
+
+      /** Update appointment in the state.appointments */
+      const appointments = {
+        ...state.appointments,
+        [id]: appointment
+      };
+      
+      const appointmentsByIdURL = `/api/appointments/${id}`;
+
+      console.log("Updating interview in database...")
+
+      return axios.put(appointmentsByIdURL, {interview})
+      .then(response => {
+        if (response.status === 204) {
+          setState({
+            ...state,
+            appointments
+          });          
+        }
+      })
+    };
+
+    const cancelInterview = (id) => {
+
+      console.log(`In Application.js - id = ${id}`);
+      /** nullify the appointment's interview data */
+      const appointment = {
+        ...state.appointments[id],
+        interview: null
+      };
+
+      /** Update appointment in the state.appointments */
+      const appointments = {
+        ...state.appointments,
+        [id]: appointment
+      };
+
+      console.log(`DELETING appointment: ${id} in database...`)
+
+      const appointmentsByIdURL = `/api/appointments/${id}`;
+      return axios.delete(appointmentsByIdURL)
+      .then(response => {
+        if (response.status === 204) {
+          setState({
+            ...state,
+            appointments
+          });          
+        }
+      })
+    };
+
+    const appointmentsList = 
+    getAppointmentsForDay(state, state.day)
+    .map(appointment => (
+      <Appointment 
+        key={appointment.id} 
+            {...appointment} 
+            interview={getInterview(state, appointment.interview)}
+            interviewers={getInterviewersForDay(state, state.day)}
+            bookInterview={bookInterview}
+            cancelInterview={cancelInterview}
+      />));
+
+    /** Initial Screen Rendering */
   return (
     <main className="layout">
       <section className="sidebar">
@@ -60,13 +137,7 @@ export default function Application(props) {
       <section className="schedule">
         {/* Replace this with the schedule elements during the "The Scheduler" activity. */}
 
-        {dailyAppointments.map(appointment => (
-          <Appointment 
-            key={appointment.id} 
-                {...appointment} 
-                interview={getInterview(state, appointment.interview)}
-                interviewers={getInterviewersForDay(state, state.day)}
-                />))}
+        {appointmentsList}
 
       </section>
     </main>

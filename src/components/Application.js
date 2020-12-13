@@ -17,7 +17,7 @@ export default function Application(props) {
     cancelInterview
   } = useApplicationData();
 
-  console.log(state, "State in applicaiton.js..*/*/*/*/");
+  // console.log(state, "State in applicaiton.js..*/*/*/*/");
   const appointmentsList = 
   getAppointmentsForDay(state, state.day)
   .map(appointment => (
@@ -34,7 +34,6 @@ export default function Application(props) {
   return (
     <main className="layout">
       <section className="sidebar">
-        {/* Replace this with the sidebar elements during the "Project Setup & Familiarity" activity. */}
         <img
           className="sidebar--centered"
           src="images/logo.png"
@@ -53,10 +52,7 @@ export default function Application(props) {
           />
       </section>
       <section className="schedule">
-        {/* Replace this with the schedule elements during the "The Scheduler" activity. */}
-
         {appointmentsList}
-
       </section>
     </main>
   );

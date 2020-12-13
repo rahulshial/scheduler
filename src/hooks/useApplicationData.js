@@ -7,6 +7,7 @@ export default function useApplication() {
   const SET_DAY = "SET_DAY";
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
   const SET_INTERVIEW = "SET_INTERVIEW";
+  const SET_SPOTS = "SET_SPOTS";
   
   const initialState = {
     day: 'Monday',
@@ -16,37 +17,30 @@ export default function useApplication() {
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log(state.day, state.days, state.appointments, state.interviewers, "from Initial State thru reducer...**-*-*-*-");
-
-  /** Declare the initial useState which is updated thruout execution */
-  
-  // const [state, setState] = useState({
-  //   day: 'Monday',
-  //   days: [],
-  //   appointments: {},
-  //   interviewers: {},
-  // })
-
 
   function reducer(state, action) {
-    console.log('Inside the reducer...', action);
     switch (action.type) {
       case SET_DAY:
         return {
-          /* insert logic */
           ...state, day: action.day
         }
       case SET_APPLICATION_DATA:
         return { 
-          /* insert logic */ 
           ...state, days: action.days, appointments: action.appointments, interviewers: action.interviewers
         }
       case SET_INTERVIEW: 
         return {
-          /* insert logic */
-          ...state, days: action.days, appointments: action.appointments
+          // ...state, days: action.days, appointments: action.appointments
+          ...state, appointments: action.appointments
       }
-
+      case SET_SPOTS:
+        let daysCopy = [...state.days];
+        const dayToBeUpdated = daysCopy.find(day => day.appointments.includes(action.payload.id));
+        dayToBeUpdated.spots += action.payload.diff;
+        daysCopy = daysCopy.map(day => day.id === dayToBeUpdated.id ? dayToBeUpdated : day);
+        return {
+          ...state, days: daysCopy  
+      }
       default:
         throw new Error(
           `Tried to reduce with unsupported action type: ${action.type}`
@@ -54,15 +48,9 @@ export default function useApplication() {
     }
   }
   
-
-
   /** set state data */
-  // const setDay = (dayName => setState({ ...state, day: dayName }));
-
   const setDay =(dayName) => {dispatch({ type: SET_DAY, day: dayName })};
 
-  // dispatch({ type: SET_APPLICATION_DATA, days, appointments, interviewers });
-  
   /** Fetch all the data form the DB and load to state */
   useEffect(() => {
     const daysURL = `/api/days`;
@@ -75,8 +63,6 @@ export default function useApplication() {
       axios.get(interviewersURL),
     ])
       .then((all) => {
-        console.log(all);
-        // setState(prev => ({...prev, days: all[0].data, appointments: all[1].data, interviewers: all[2].data }));
         dispatch ({ 
           type: SET_APPLICATION_DATA, 
           days: all[0].data, 
@@ -88,14 +74,12 @@ export default function useApplication() {
 
   /** Function Declarations */
 
-  const updateSpotsForDay = (state, id, diff) => {
-    const newDays = state.days.find(event => event.appointments.includes(id));
-    console.log(`add: ${diff} **** newDays: ${newDays.id} **** spots: ${newDays.spots}`);
-    newDays.spots += diff;
-    console.log(`add: ${diff} **** newDays: ${newDays.id} **** spotsAfter: ${newDays.spots}`);
-    const days = state.days.map(day => day.id === newDays.id ? newDays : day);
-    return days;
-  };
+  // const updateSpotsForDay = (state, id, diff) => {
+  //   const newDays = state.days.find(day => day.appointments.includes(id));
+  //   newDays.spots += diff;
+  //   const days = state.days.map(day => day.id === newDays.id ? newDays : day);
+  //   return days;    
+  // };
 
   const bookInterview = (id, interview) => {
     /** Create / Add a new appointment to the state and database */
@@ -103,26 +87,22 @@ export default function useApplication() {
       ...state.appointments[id],
       interview: { ...interview }
     };
-
     /** Update appointment in the state.appointments */
     const appointmentsUpdated = {
       ...state.appointments,
       [id]: appointmentUpdated
     };
-
+    
     const diff = !state.appointments[id].interview ? -1 : 0;
-    const daysUpdated = updateSpotsForDay(state, id, diff);
+    // const daysUpdated = updateSpotsForDay(state, id, diff);
 
     const appointmentsByIdURL = `/api/appointments/${id}`;
     return axios.put(appointmentsByIdURL, {interview})
     .then(response => {
       if (response.status === 204) {
-      //   setState(prev => ({
-      //     ...prev,
-      //     days: daysUpdated,
-      //     appointments
-      //   }));
-      dispatch({type: SET_INTERVIEW, days: daysUpdated, appointments: appointmentsUpdated })
+        dispatch({type: SET_INTERVIEW, appointments: appointmentsUpdated })
+        dispatch({type: SET_SPOTS, payload:{id: id, diff: diff}})
+        // dispatch({type: SET_INTERVIEW, days: daysUpdated, appointments: appointmentsUpdated })
       }
     })
   };
@@ -133,26 +113,23 @@ export default function useApplication() {
     const appointmentUpdated = {
       ...state.appointments[id],
       interview: null
-    };
-    
+    };    
     /** Update appointment in the state.appointments */
     const appointmentsUpdated = {
       ...state.appointments,
       [id]: appointmentUpdated
     };
-    const add = +1;
-    const daysUpdated = updateSpotsForDay(state, id, add);
 
+    const diff = +1;
+    // const daysUpdated = updateSpotsForDay(state, id, diff);
+    
     const appointmentsByIdURL = `/api/appointments/${id}`;
     return axios.delete(appointmentsByIdURL)
     .then(response => {
       if (response.status === 204) {
-        // setState(prev => ({
-        //   ...prev,
-        //   days: daysUpdated,
-        //   appointments
-        // }));
-        dispatch({type: SET_INTERVIEW, days: daysUpdated, appointments: appointmentsUpdated })
+        dispatch({type: SET_INTERVIEW, appointments: appointmentsUpdated })
+        dispatch({type: SET_SPOTS, payload:{id: id, diff: diff}})
+        // dispatch({type: SET_INTERVIEW, days: daysUpdated, appointments: appointmentsUpdated })
       }
     })
   };

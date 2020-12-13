@@ -1,60 +1,55 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 
 export default function useVisualMode(initial) {
-  const [mode, setMode] = useState(initial);
-  const [history, setHistory] = useState([initial]);
+  const TRANSITION = "TRANSITION";
+  const BACK = "BACK";
+  
+  
+  const initialState = {
+    mode: '',
+    history: []
+  };
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  console.log(state.mode);
+  let mode = state.mode || initial;
+  
+  function reducer(state, action) {
+    switch (action.type) {
+      case TRANSITION:
+        const transitionHistory = [...state.history];
+        if(action.payload.replace === true) {
+          transitionHistory.pop()
+        }
+        transitionHistory.push(action.payload.newMode);
+        return {
+          ...state, mode: action.payload.newMode, history: transitionHistory
+        }
+      case BACK:
+        const backHistory = [...state.history];
+        if (backHistory.length >= 1) {
+          backHistory.pop();
+        }
+        const backMode = backHistory[backHistory.length - 1];
+        return {
+          ...state, mode: backMode, history: backHistory
+        }
+      default:
+        throw new Error(
+          `Tried to reduce with unsupported action type: ${action.type}`
+        );
+  }
+}
 
   const transition = (newMode, replace = false) => {
-    setMode(newMode);
-    setHistory((prev) => {
-      const newHistory = [...prev];
-      if (replace) {
-        newHistory.pop();
-      }
-      newHistory.push(newMode);
-      return newHistory;
-    });
+    console.log(`In Transition...newMode: ${newMode}, replace: ${replace}`);
+    dispatch({type: TRANSITION, payload:{newMode: newMode, replace: replace}})
   };
 
   const back = () => {
-    setHistory((prev) => {
-      const newHistory = [...prev];
-      if (newHistory.length < 2) {
-        return prev;
-      }
-      newHistory.pop();
-      setMode(newHistory[newHistory.length - 1]);
-      return newHistory;
-    });
+    dispatch({type: BACK})
   };
 
-  return {mode, transition, back};
+  return { mode, transition, back };
 };
-
-// export default function useVisualMode(initial) {
-//   const [mode, setMode] = useState(initial);
-//   const [history, setHistory] = useState([initial]);
-  // const transition = (newMode, replace = false) => {
-  //   setMode(newMode);
-  //   setHistory((prev) => {
-  //     const newHistory = [...prev];
-  //     if (replace) {
-  //       newHistory.pop();
-  //     }
-  //     newHistory.push(newMode);
-  //     return newHistory;
-  //   });
-  // };
-  // const back = () => {
-  //   setHistory((prev) => {
-  //     const newHistory = [...prev];
-  //     if (newHistory.length < 2) {
-  //       return prev;
-  //     }
-  //     newHistory.pop();
-  //     setMode(newHistory[newHistory.length - 1]);
-  //     return newHistory;
-  //   });
-  // };
-//   return { mode, transition, back };
-// }

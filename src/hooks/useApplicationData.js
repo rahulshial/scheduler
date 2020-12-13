@@ -1,4 +1,3 @@
-// import { useState, useEffect, useReducer } from 'react';
 import { useEffect, useReducer } from 'react';
 import axios from 'axios';
 
@@ -30,7 +29,6 @@ export default function useApplication() {
         }
       case SET_INTERVIEW: 
         return {
-          // ...state, days: action.days, appointments: action.appointments
           ...state, appointments: action.appointments
       }
       case SET_SPOTS:
@@ -74,14 +72,7 @@ export default function useApplication() {
 
   /** Function Declarations */
 
-  // const updateSpotsForDay = (state, id, diff) => {
-  //   const newDays = state.days.find(day => day.appointments.includes(id));
-  //   newDays.spots += diff;
-  //   const days = state.days.map(day => day.id === newDays.id ? newDays : day);
-  //   return days;    
-  // };
-
-  const bookInterview = (id, interview) => {
+   const bookInterview = (id, interview) => {
     /** Create / Add a new appointment to the state and database */
     const appointmentUpdated = {
       ...state.appointments[id],
@@ -94,7 +85,6 @@ export default function useApplication() {
     };
     
     const diff = !state.appointments[id].interview ? -1 : 0;
-    // const daysUpdated = updateSpotsForDay(state, id, diff);
 
     const appointmentsByIdURL = `/api/appointments/${id}`;
     return axios.put(appointmentsByIdURL, {interview})
@@ -102,7 +92,6 @@ export default function useApplication() {
       if (response.status === 204) {
         dispatch({type: SET_INTERVIEW, appointments: appointmentsUpdated })
         dispatch({type: SET_SPOTS, payload:{id: id, diff: diff}})
-        // dispatch({type: SET_INTERVIEW, days: daysUpdated, appointments: appointmentsUpdated })
       }
     })
   };
@@ -121,7 +110,6 @@ export default function useApplication() {
     };
 
     const diff = +1;
-    // const daysUpdated = updateSpotsForDay(state, id, diff);
     
     const appointmentsByIdURL = `/api/appointments/${id}`;
     return axios.delete(appointmentsByIdURL)
@@ -129,7 +117,6 @@ export default function useApplication() {
       if (response.status === 204) {
         dispatch({type: SET_INTERVIEW, appointments: appointmentsUpdated })
         dispatch({type: SET_SPOTS, payload:{id: id, diff: diff}})
-        // dispatch({type: SET_INTERVIEW, days: daysUpdated, appointments: appointmentsUpdated })
       }
     })
   };

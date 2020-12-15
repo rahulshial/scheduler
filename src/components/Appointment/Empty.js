@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default function Empty({onAdd}) {
+export default function Empty(props) {
+  const {onAdd} = props;
 
-  // return <div className="appointment-empty">This is empty</div>
   return(
     <main className="appointment__add">
       <img

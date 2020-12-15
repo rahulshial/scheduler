@@ -9,7 +9,10 @@ import Confirm from './Confirm';
 import Error from './Error';
 import useVisualMode from '../../hooks/useVisualMode'
 
-export default function Appointment({id, time, interview, interviewers, bookInterview, cancelInterview}) {  
+export default function Appointment(props) {
+  
+  const {id, time, interview, interviewers, bookInterview, cancelInterview} = props;
+
   /** Mode declarations */
   const EMPTY = "EMPTY";
   const SHOW = "SHOW";
@@ -85,7 +88,8 @@ export default function Appointment({id, time, interview, interviewers, bookInte
         {mode === EDIT && (
         <Form
           name={interview.student}
-          interviewers={interviewers} 
+          interviewers={interviewers}
+          interviewer={interview.interviewer.id}
           onCancel={() => {back()}}
           onSave={save}
         />)}

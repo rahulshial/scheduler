@@ -44,14 +44,12 @@ export default function reducer(state, action) {
         ...state.appointments,
         [action.id]: appointment,
       };
-      const days = showDaysWithSpots(state.days, appointments);
-  
+      const days = showDaysWithSpots(state.days, appointments);  
       return {
         ...state, 
         days,
         appointments
       }
-
     default:
       throw new Error(
         `Tried to reduce with unsupported action type: ${action.type}`

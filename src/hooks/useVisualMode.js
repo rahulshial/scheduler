@@ -11,8 +11,6 @@ export default function useVisualMode(initial) {
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  // console.log(state.mode);
   let mode = state.mode || initial;
   
   function reducer(state, action) {
@@ -43,7 +41,6 @@ export default function useVisualMode(initial) {
 }
 
   const transition = (newMode, replace = false) => {
-    // console.log(`In Transition...newMode: ${newMode}, replace: ${replace}`);
     dispatch({type: TRANSITION, payload:{newMode: newMode, replace: replace}})
   };
 

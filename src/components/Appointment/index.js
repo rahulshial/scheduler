@@ -45,7 +45,7 @@ export default function Appointment(props) {
   }
 
   const deleteAppt = () => {
-    console.log(`In Index.js - id = ${id}`);
+    // console.log(`In Index.js - id = ${id}`);
     transition('DELETE', true);
     cancelInterview(id)
     .then(response => {
@@ -58,7 +58,8 @@ export default function Appointment(props) {
 
   /** Rendering logic */
   return(
-    <article className="appointment">
+    <article className="appointment" data-testid="appointment">
+
       <Header time={time} />
       {mode === EMPTY && (
         <Empty 

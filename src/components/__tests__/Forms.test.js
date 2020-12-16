@@ -48,7 +48,7 @@ describe("Form", () => {
     const onSave = jest.fn();
 
     /* 2. Render the Form with interviewers and the onSave mock function passed as an onSave prop, the name prop should be blank or undefined */
-    const { queryByText } = render(<Form interviewers={interviewers} name="Lydia Miller-Jones" onSave={onSave} />);
+    const { queryByText } = render(<Form interviewers={interviewers} name="Lydia Miller-Jones" interviewer={1} onSave={onSave} />);
 
     /* 3. Click the save button */
     fireEvent.click(queryByText('Save'));
@@ -60,14 +60,14 @@ describe("Form", () => {
     expect(onSave).toHaveBeenCalledTimes(1);
   
     /* 6. onSave is called with the correct arguments */
-    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", null);
+    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1);
   });
   /** */
   it("submits the name entered by the user", () => {
     
     const onSave = jest.fn();
     const { getByText, getByPlaceholderText } = render(
-      <Form interviewers={interviewers} onSave={onSave} />
+      <Form interviewers={interviewers} interviewer={1} onSave={onSave} />
     );
   
     const input = getByPlaceholderText("Enter Student Name");
@@ -76,13 +76,13 @@ describe("Form", () => {
     fireEvent.click(getByText("Save"));
   
     expect(onSave).toHaveBeenCalledTimes(1);
-    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", null);
+    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1);
   });
   /** */
   it("can successfully save after trying to submit an empty student name", () => {
     const onSave = jest.fn();
     const { getByText, getByPlaceholderText, queryByText } = render(
-      <Form interviewers={interviewers} onSave={onSave} />
+      <Form interviewers={interviewers} interviewer={1} onSave={onSave} />
     );
   
     fireEvent.click(getByText("Save"));
@@ -99,7 +99,7 @@ describe("Form", () => {
     expect(queryByText(/student name cannot be blank/i)).toBeNull();
   
     expect(onSave).toHaveBeenCalledTimes(1);
-    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", null);
+    expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1);
   });
   /**
    * calls onCancel and resets the input field

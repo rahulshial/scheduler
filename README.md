@@ -15,6 +15,8 @@ The app has the following dependencies.
 * express
 * postgresql
 
+The app has test scripts created for Jest and Cypress for integration and end to end testing.
+
 ## Setup
 
 Install dependencies with `npm install`.

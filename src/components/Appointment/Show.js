@@ -1,5 +1,9 @@
 import React from 'react';
 
+/** This component shows the appointments which have been set. This component is also called from 
+ * src/components/Appointment/index.js on the Show mode. Index.js passes the appropriate props to
+ * display the student name, interviwer with options to cancel or edit the appointment.
+ */
 export default function Show(props) {
 
   const {student, interviewer, onEdit, onDelete} = props;

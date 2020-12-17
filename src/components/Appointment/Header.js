@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * Called from Appointments component in /src/components/Appointment/index.js
+ */
 export default function Header(props){
 
   const {time} = props;

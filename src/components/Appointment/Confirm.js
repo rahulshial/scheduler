@@ -1,6 +1,10 @@
 import React from 'react';
 import Button from '../Button';
 
+/** This React component shows the Confirm dialogue when 
+ * the user tries to cancel an appointment.
+ * called from Appointments component in /src/components/Appointment/index.js
+ */
 export default function Confirm(props) {
 const {message, onConfirm, onCancel} = props;
   return(

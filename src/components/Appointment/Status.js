@@ -1,5 +1,8 @@
 import React from 'react';
 
+/** This component renders the status while saving or cancelling the appointment.
+ * Called from the Appointments component in /src/components/Appointment/index.js
+ */
 export default function Status(props) {
   const {message} = props;
   return(

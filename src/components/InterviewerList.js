@@ -2,6 +2,7 @@ import React from "react";
 import InterviewerListItem from 'components/InterviewerListItem';
 import 'components/InterviewerList.scss';
 
+/** Renders the interviewer list for each appointment booked. */
 export default function InterviewerList(props) {
   const {interviewers, value, onChange} = props;
   const interviewerListItem = interviewers.map((interviewerData, index) => {

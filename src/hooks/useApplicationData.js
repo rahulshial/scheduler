@@ -7,6 +7,10 @@ import reducer, {
   SET_INTERVIEW
 } from "reducers/application";
 
+/** This is a custom hook used to perform all db fetch, insert and update functions called.
+ * It uses a reducer hook to manage the state of all days, day, appointments, interviews and interviewer.
+*/
+
 export default function useApplication() {  
  
   const initialState = {

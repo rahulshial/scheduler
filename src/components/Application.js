@@ -8,6 +8,14 @@ import {
 import useApplicationData from '../hooks/useApplicationData';
 import "components/Application.scss";
 
+/** This is the main screen rendering component which uses a custom hook to fetch the records from
+ * the server/db and update the state which is passed her as props.
+ * The state is used to populate the DayList - which shows the days where appiontments can be booked
+ * and thru the DayList, the DayListItem component is rendered which shows the appointments for each
+ * day.
+ * Te setday, bookInterview, cancelInterview, getInterview, getInterviewersForDay and
+ * getAppointmentsforDay are declared thru the selectors and hooks.
+ * */
 export default function Application(props) {
 
   const {

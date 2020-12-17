@@ -1,4 +1,5 @@
 
+/** Selectors are used within the application to use the state data and return return the respective filtered data back to the applicaton component to render on screen. */
 
 const getAppointmentsForDay = (state, day) => {
   const appointmentsArray = [];

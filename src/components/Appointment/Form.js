@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import InterviewerList from '../InterviewerList';
 import Button from '../Button';
 
+/** this is the main appointment component where a user can set his interview appointment
+ * or edit his appointment 
+ * called from Appointments component in /src/components/Appointment/index.js
+ */
 export default function Form(props) {
 
   const {interviewers, onSave, onCancel} = props;

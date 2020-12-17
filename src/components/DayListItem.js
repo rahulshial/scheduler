@@ -2,6 +2,8 @@ import React from "react";
 import classnames from 'classnames';
 import 'components/DayListItem.scss';
 
+/** Receives the student name if any, number of spots and renders the DayListItem for each day */
+
 export default function DayListItem({name, spots, setDay, selected}) {
   
   const dayClass = 'day-list__item day-list__item' + classnames({

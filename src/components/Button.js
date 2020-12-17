@@ -2,7 +2,10 @@ import React from "react";
 import classnames from 'classnames';
 
 import "components/Button.scss";
-
+/**
+ * Buttons used in booking, editing and cancelling of appointments.
+ * 
+ */
 export default function Button(props) {
   const {confirm, danger} = props;
   

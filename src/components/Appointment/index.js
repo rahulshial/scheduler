@@ -9,6 +9,10 @@ import Confirm from './Confirm';
 import Error from './Error';
 import useVisualMode from '../../hooks/useVisualMode'
 
+/** This is the actual Appointment component which allows the user to navigate thru the
+ * different appointments set for a single day. This component is called out during the initial load of the application, which fetches data from the server/db to render all the days and their respective appointment slots.
+ * As the user navigates to Add, Edit, Cancel the appointments the modes are set thru the useVisualMode hook which when returned back allows this component to render the appropriate component.
+ */
 export default function Appointment(props) {
   
   const {id, time, interview, interviewers, bookInterview, cancelInterview} = props;
@@ -45,7 +49,6 @@ export default function Appointment(props) {
   }
 
   const deleteAppt = () => {
-    // console.log(`In Index.js - id = ${id}`);
     transition('DELETE', true);
     cancelInterview(id)
     .then(response => {

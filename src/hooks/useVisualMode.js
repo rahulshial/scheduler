@@ -10,6 +10,10 @@ export default function useVisualMode(initial) {
     history: []
   };
 
+  /** This hook component uses reducer to manage the mode and it's history which is used from the 
+   * Appointment component to render the appropriate screen to the user.  
+   */
+  
   const [state, dispatch] = useReducer(reducer, initialState);
   let mode = state.mode || initial;
   

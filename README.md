@@ -1,6 +1,6 @@
 # Interview Scheduler
 
-The Intervew Scheduler is a single page app that allows viewing, adding, editing and cancelling appointments with interviewers. Interviewees have the choice of 5 interviewers to choose from. 
+The Interview Scheduler is a single page app that allows viewing, adding, editing and cancelling appointments with interviewers. Interviewees have the choice of 5 interviewers to choose from. 
 ```sh
 The app has been deployed using CircleCI to create a production branch that is used by Netlify to host the app --> https://wizardly-nightingale-5b913a.netlify.app/
 ```
